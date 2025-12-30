@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>에니어그램으로 나를 찾아 떠나는 여행</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="app-header">
+        <h1>에니어그램으로 나를 찾아 떠나는 여행</h1>
+        <p>나의 잠재력을 발견하고, 더 나은 나를 위한 전략을 세워보세요!</p>
+    </header>
+
+    <main id="app-container" class="app-container">
+        <section id="start-screen" class="screen active">
+            <div class="logo-placeholder logo" aria-label="Enneagram Logo"></div>
+            <h2>내 안의 숨겨진 빛을 찾아보세요!</h2>
+            <p>9가지 성격 유형을 통해 학습, 대인관계, 진로 전략까지.<br>나를 위한 맞춤형 가이드를 받아보세요.</p>
+            <div class="test-options">
+                <button id="start-simple-test-btn" class="btn secondary">간이 검사 (18문항)</button>
+                <button id="start-full-test-btn" class="btn primary">정식 검사 (108문항)</button>
+            </div>
+        </section>
+
+        <!-- Test Screen will be dynamically loaded here -->
+        <section id="test-screen" class="screen">
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <div class="question-container">
+                <p class="question-number"></p>
+                <p class="question-text"></p>
+                <div class="options-container">
+                    <!-- Options will be dynamically loaded here -->
+                </div>
+            </div>
+            <div class="navigation-buttons">
+                <button id="prev-question-btn" class="btn secondary" disabled>이전</button>
+                <button id="next-question-btn" class="btn primary" disabled>다음</button>
+            </div>
+        </section>
+
+        <!-- Loading Screen -->
+        <section id="loading-screen" class="screen">
+            <div class="spinner"></div>
+            <h2>결과를 분석 중입니다...</h2>
+            <p>당신만의 우주를 탐색하고 있어요!</p>
+        </section>
+
+        <!-- Result Screen -->
+        <section id="result-screen" class="screen">
+            <h2 class="result-type-title"></h2>
+            <div class="logo-placeholder result-type-image" aria-label="유형 대표 이미지"></div>
+            <p class="result-summary"></p>
+            <div class="strategy-tabs">
+                <button class="tab-btn active" data-strategy="learning">학습 전략</button>
+                <button class="tab-btn" data-strategy="interpersonal">대인관계 전략</button>
+                <button class="tab-btn" data-strategy="career">진로 전략</button>
+            </div>
+            <div class="strategy-content">
+                <p class="learning-strategy active"></p>
+                <p class="interpersonal-strategy"></p>
+                <p class="career-strategy"></p>
+            </div>
+            <div class="result-actions">
+                <button id="go-to-start-btn" class="btn secondary">처음으로 돌아가기</button>
+                <button id="share-result-btn" class="btn primary">결과 공유하기</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>&copy; 2025 에니어그램으로 나를 찾아 떠나는 여행. All rights reserved.</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
