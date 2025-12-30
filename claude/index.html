@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEM 3.0 - 통합 성장 플랫폼</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles can go here if needed */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(to bottom right, #4F46E5, #9333EA, #EC4899); /* indigo-purple-pink gradient */
+            min-height: 100vh;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-attachment: fixed;
+        }
+        /* Glassmorphism base for sections */
+        section {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem; /* rounded-3xl equivalent */
+            padding: 1.5rem;
+            max-width: 420px; /* max-w-md equivalent + padding */
+            width: 100%;
+            margin: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="selection:bg-pink-300 selection:text-white">
+    <main id="app-container" class="relative min-h-screen w-full flex flex-col items-center justify-center p-4">
+        <!-- Splash Screen -->
+        <section id="splash-screen" class="splash-screen flex flex-col items-center justify-center text-center p-8 space-y-6">
+            <div class="relative w-24 h-24 flex items-center justify-center bg-white/10 backdrop-blur-lg rounded-3xl border border-white/20 mb-4">
+                <span class="text-5xl">🧭</span>
+            </div>
+            <h1 class="text-5xl font-extrabold text-white">MEM 3.0</h1>
+            <p class="text-xl font-semibold text-white/90">통합 성장 플랫폼</p>
+            <p class="text-md text-white/70">학습 · 진로 · 관계 · 성숙</p>
+            <p class="text-lg text-pink-300 font-bold">27문항 정밀 에니어그램</p>
+            <div class="flex flex-col space-y-4 w-full max-w-xs">
+                <button id="login-button" class="btn-primary bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl px-6 py-3 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                    로그인
+                </button>
+                <button id="start-button" class="btn-secondary bg-white/10 border border-white/10 text-white rounded-xl px-6 py-3 text-lg font-semibold hover:bg-white/20 transition-all duration-200">
+                    시작하기
+                </button>
+            </div>
+        </section>
+
+        <!-- Auth Screen -->
+        <section id="auth-screen" class="auth-screen hidden flex-col p-8 space-y-6">
+            <button id="auth-back-button" class="absolute top-4 left-4 text-white text-2xl">←</button>
+            <div class="flex flex-col items-center justify-center text-center space-y-4 mb-6">
+                <div class="relative w-20 h-20 flex items-center justify-center bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20">
+                    <span class="text-4xl">🧭</span>
+                </div>
+                <h2 class="text-3xl font-bold text-white">환영합니다!</h2>
+                <p id="auth-message" class="text-white/80 text-lg">시작하려면 로그인 또는 회원가입하세요.</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="space-y-4 w-full max-w-xs">
+                <input type="email" id="login-email" placeholder="이메일" class="input-field w-full p-3 bg-white/10 rounded-xl text-white placeholder-white/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200">
+                <input type="password" id="login-password" placeholder="비밀번호" class="input-field w-full p-3 bg-white/10 rounded-xl text-white placeholder-white/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200">
+                <button type="submit" class="btn-primary w-full p-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                    로그인
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="space-y-4 w-full max-w-xs hidden">
+                <input type="text" id="register-name" placeholder="이름" class="input-field w-full p-3 bg-white/10 rounded-xl text-white placeholder-white/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200">
+                <input type="email" id="register-email" placeholder="이메일" class="input-field w-full p-3 bg-white/10 rounded-xl text-white placeholder-white/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200">
+                <input type="password" id="register-password" placeholder="비밀번호" class="input-field w-full p-3 bg-white/10 rounded-xl text-white placeholder-white/40 border border-white/10 focus:outline-none focus:ring-2 focus:ring-pink-500 transition-all duration-200">
+                <button type="submit" class="btn-primary w-full p-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                    회원가입
+                </button>
+            </form>
+
+            <p class="text-white/70 mt-4">
+                <span id="auth-mode-toggle" class="text-pink-300 cursor-pointer hover:underline">회원가입하기</span>
+            </p>
+        </section>
+
+        <!-- Welcome Screen -->
+        <section id="welcome-screen" class="welcome-screen hidden flex-col items-center justify-center text-center p-8 space-y-6">
+            <span class="text-6xl mb-4">✨</span>
+            <h2 class="text-3xl font-bold text-white">나를 알아가는 여정</h2>
+            <p class="text-white/80 text-lg">27문항 정밀 에니어그램 검사를 통해 당신의 성격 유형을 분석합니다.</p>
+            <p class="text-white/70 text-md">1~10점 세밀한 척도로 자신을 더욱 정확하게 측정해보세요.</p>
+            <p class="text-white/60 text-sm">예상 소요시간: 5~7분</p>
+            <button id="start-test-button" class="btn-primary mt-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl px-8 py-4 text-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                테스트 시작
+            </button>
+        </section>
+
+        <!-- Survey Screen -->
+        <section id="survey-screen" class="survey-screen hidden flex-col items-center justify-between h-full w-full p-8 space-y-6">
+            <!-- Header -->
+            <div class="w-full text-center mb-6">
+                <h2 class="text-xl font-bold text-white mb-2">27문항 정밀 에니어그램</h2>
+                <p class="text-sm text-white/70 mb-4"><span id="current-question-num">1</span>/<span id="total-questions-num">27</span> 문항</p>
+                <div class="w-full bg-white/20 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-gradient-to-r from-pink-400 to-purple-400 h-2.5 rounded-full transition-all duration-300 ease-out" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Question Area -->
+            <div class="flex-grow flex items-center justify-center text-center px-4 mb-6">
+                <p id="question-text" class="text-2xl font-semibold text-white leading-relaxed">질문 텍스트</p>
+            </div>
+
+            <!-- Score Display Area -->
+            <div class="w-full text-center mb-6">
+                <p class="text-sm text-white/70">선택 점수</p>
+                <div class="flex items-baseline justify-center space-x-2">
+                    <span id="current-score-display" class="text-6xl font-extrabold" style="text-shadow: 0 0 10px rgba(255,255,255,0.5);">5</span>
+                    <span id="score-label" class="text-xl text-white/80">보통이다</span>
+                </div>
+            </div>
+
+            <!-- Score Selection UI (Buttons) -->
+            <div class="w-full mb-6">
+                <div class="flex justify-between text-white/70 text-sm mb-2">
+                    <span>전혀 아니다</span>
+                    <span>매우 그렇다</span>
+                </div>
+                <div id="score-buttons-grid" class="grid grid-cols-10 gap-1 mb-4">
+                    <!-- Buttons will be generated by JS -->
+                </div>
+                <input type="range" id="score-slider" min="1" max="10" value="5" class="w-full h-2 rounded-lg appearance-none cursor-pointer range-lg" style="background-color: transparent;">
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between w-full">
+                <button id="prev-question-button" class="btn-secondary px-6 py-3 bg-white/10 border border-white/10 text-white rounded-xl text-lg font-semibold hover:bg-white/20 transition-all duration-200" disabled>
+                    이전
+                </button>
+                <button id="next-question-button" class="btn-primary px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                    다음
+                </button>
+            </div>
+        </section>
+
+        <!-- Result Screen -->
+        <section id="result-screen" class="result-screen hidden flex-col items-center justify-center text-center p-8 space-y-6">
+            <span class="text-6xl mb-4">🎉</span>
+            <h2 class="text-3xl font-bold text-white mb-6">분석 완료!</h2>
+
+            <!-- Core Type Card -->
+            <div class="card bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full mb-6">
+                <p class="text-white/80 text-lg mb-2">당신의 핵심 유형은</p>
+                <div class="flex items-center justify-center space-x-4 mb-4">
+                    <span id="result-core-emoji" class="text-5xl"></span>
+                    <h3 class="text-4xl font-extrabold text-white"><span id="result-core-type-num"></span>번 <span id="result-core-type-name"></span></h3>
+                </div>
+                <p id="result-core-type-short" class="text-white/70 text-md mb-2"></p>
+                <p id="result-wing-type" class="text-white/60 text-sm mb-4"></p>
+                <p id="result-core-type-desc" class="text-white/90 text-sm leading-relaxed text-left"></p>
+            </div>
+
+            <!-- Top 3 Types Bar Chart -->
+            <div class="card bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full mb-6">
+                <h4 class="text-xl font-bold text-white mb-4">유형별 점수</h4>
+                <div id="top-types-chart" class="space-y-3">
+                    <!-- Chart bars will be generated by JS -->
+                </div>
+            </div>
+
+            <!-- Growth/Stress Direction Card -->
+            <div class="card bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full mb-6">
+                <h4 class="text-xl font-bold text-white mb-4">성장과 스트레스 방향</h4>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col items-center">
+                        <p class="text-white/70 text-sm mb-1">성장 방향</p>
+                        <span id="result-growth-emoji" class="text-3xl mb-1"></span>
+                        <p id="result-growth-type" class="text-white font-semibold text-lg"></p>
+                        <p id="result-growth-desc" class="text-white/70 text-xs"></p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <p class="text-white/70 text-sm mb-1">스트레스 방향</p>
+                        <span id="result-stress-emoji" class="text-3xl mb-1"></span>
+                        <p id="result-stress-type" class="text-white font-semibold text-lg"></p>
+                        <p id="result-stress-desc" class="text-white/70 text-xs"></p>
+                    </div>
+                </div>
+            </div>
+
+            <button id="go-to-dashboard-button" class="btn-primary mt-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl px-8 py-4 text-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                대시보드로 이동
+            </button>
+        </section>
+
+        <!-- Dashboard -->
+        <section id="dashboard-screen" class="dashboard-screen hidden flex-col h-full w-full relative">
+            <!-- Dashboard Header -->
+            <header class="flex items-center justify-between p-4 bg-white/10 backdrop-blur-lg rounded-b-2xl border-b border-white/20 mb-4">
+                <div class="flex items-center space-x-3">
+                    <span id="dashboard-user-emoji" class="text-3xl"></span>
+                    <div>
+                        <p class="text-white text-lg font-semibold"><span id="dashboard-user-name">사용자</span>님</p>
+                        <p class="text-white/70 text-sm"><span id="dashboard-type-info">N번 유형명 · 날개N</span></p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span class="badge bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-bold">🔥 <span id="dashboard-streak">0</span>일</span>
+                    <button id="logout-button" class="text-white/70 hover:text-white transition-colors duration-200">로그아웃</button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Area -->
+            <div id="dashboard-content" class="flex-grow p-4 overflow-y-auto pb-24">
+                <!-- Content for selected tab will be rendered here by JS -->
+            </div>
+
+            <!-- Bottom Tab Navigation -->
+            <nav class="fixed bottom-0 left-0 right-0 bg-white/10 backdrop-blur-lg border-t border-white/20 flex justify-around p-3 z-50">
+                <button class="tab-button flex flex-col items-center text-white/70 hover:text-white transition-colors duration-200" data-tab="home">
+                    <span class="text-2xl">🏠</span>
+                    <span class="text-xs">홈</span>
+                </button>
+                <button class="tab-button flex flex-col items-center text-white/70 hover:text-white transition-colors duration-200" data-tab="learning">
+                    <span class="text-2xl">📚</span>
+                    <span class="text-xs">학습</span>
+                </button>
+                <button class="tab-button flex flex-col items-center text-white/70 hover:text-white transition-colors duration-200" data-tab="career">
+                    <span class="text-2xl">🧭</span>
+                    <span class="text-xs">진로</span>
+                </button>
+                <button class="tab-button flex flex-col items-center text-white/70 hover:text-white transition-colors duration-200" data-tab="relationship">
+                    <span class="text-2xl">💝</span>
+                    <span class="text-xs">관계</span>
+                </button>
+            </nav>
+        </section>
+    </main>
+
+    <!-- Compatibility Detail Modal (already exists) -->
+    <div id="compatibility-modal" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+        <div class="card bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full max-w-md text-center relative">
+            <button id="modal-close-button" class="absolute top-4 right-4 text-white text-xl">✖</button>
+            <div class="flex items-center justify-center space-x-2 mb-4">
+                <span id="modal-type-emoji" class="text-4xl"></span>
+                <h3 class="text-3xl font-bold text-white"><span id="modal-type-num"></span>번 <span id="modal-type-name"></span></h3>
+            </div>
+            <p id="modal-type-keyword" class="text-white/70 text-md mb-4"></p>
+            <p id="modal-type-description" class="text-white/90 text-sm leading-relaxed text-left mb-6"></p>
+            
+            <div class="bg-white/10 p-4 rounded-xl mb-6">
+                <p class="text-white/80 text-sm mb-2">나(<span id="modal-my-type-num"></span>번)와의 호환성</p>
+                <div class="flex items-center justify-between mb-2">
+                    <span id="modal-compatibility-label" class="text-lg font-semibold"></span>
+                    <span id="modal-compatibility-score" class="text-lg font-bold"></span>
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-3">
+                    <div id="modal-compatibility-bar" class="h-3 rounded-full transition-all duration-300 ease-out" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <h4 class="text-xl font-bold text-white mb-3">💫 <span id="modal-relationship-title"></span></h4>
+            <p id="modal-relationship-description" class="text-white/80 text-sm leading-relaxed mb-6 text-left"></p>
+            
+            <div class="bg-white/10 p-4 rounded-xl">
+                <h4 class="text-lg font-bold text-pink-300 mb-2">💡 관계 팁</h4>
+                <p id="modal-relationship-tip" class="text-white/80 text-sm leading-relaxed text-left"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- General Message Modal -->
+    <div id="message-modal" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-4">
+        <div class="card bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 p-6 w-full max-w-sm text-center relative">
+            <h3 id="message-modal-title" class="text-2xl font-bold text-white mb-4">알림</h3>
+            <p id="message-modal-content" class="text-white/90 mb-6"></p>
+            <button id="message-modal-close-button" class="btn-primary bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl px-6 py-3 text-lg font-semibold w-full">확인</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[200] space-y-3">
+        <!-- Toasts will be appended here -->
+    </div>
+
+    <!-- Loading Spinner Overlay -->
+    <div id="loading-spinner" class="hidden fixed inset-0 bg-black/50 z-[300] flex items-center justify-center">
+        <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12" style="border-top-color: #EC4899;"></div>
+    </div>
+
+    <style>
+        .loader {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script src="app.js"></script>
+</body>
+</html>
+
