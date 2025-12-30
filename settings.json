@@ -1,0 +1,7 @@
+{
+  "autoApprovedTools": [
+    "shell",
+    "write_file"
+    // 필요한 다른 도구들을 여기에 추가
+  ]
+}
